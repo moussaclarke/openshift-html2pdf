@@ -1,9 +1,7 @@
 from bottle import route, default_app, request, response, template
-
-
-@route('/name/<name>')
-def nameindex(name='Stranger'):
-    return '<strong>Hello, %s!</strong>' % name
+from io import BytesIO
+import requests
+from xhtml2pdf import pisa
 
 
 @route('/')
@@ -14,7 +12,15 @@ def index():
 @route('/pdf')
 def pdf():
     url = request.query.url
-    return url
+    r = requests.get(url)
+    pdf_buffer = BytesIO()
+
+    response.content_type = 'application/pdf; charset=UTF-8'
+    response.headers['Content-Disposition'] = 'attachment; filename="test.pdf"'
+
+    pisa.CreatePDF(r.text, dest=pdf_buffer)
+
+    return pdf_buffer.getvalue()
 
 # This must be added in order to do correct path lookups for the views
 import os
