@@ -1,7 +1,6 @@
-from bottle import route, default_app, request, response, template
-from io import BytesIO
-import requests
-from xhtml2pdf import pisa
+from bottle import route, default_app, request, response
+import pdfkit
+import unicodedata
 
 
 @route('/')
@@ -11,16 +10,14 @@ def index():
 
 @route('/pdf')
 def pdf():
-    url = request.query.url
-    r = requests.get(url)
-    pdf_buffer = BytesIO()
+    url = unicodedata.normalize('NFKD', request.query.url).encode('ascii', 'ignore')
 
     response.content_type = 'application/pdf; charset=UTF-8'
     response.headers['Content-Disposition'] = 'attachment; filename="test.pdf"'
 
-    pisa.CreatePDF(r.text, dest=pdf_buffer)
+    generated_pdf = pdfkit.from_url(url, False)
+    return generated_pdf
 
-    return pdf_buffer.getvalue()
 
 # This must be added in order to do correct path lookups for the views
 import os
