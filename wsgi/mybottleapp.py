@@ -10,12 +10,15 @@ def index():
 
 @route('/pdf')
 def pdf():
+    dir = os.path.dirname(__file__)
+    filename = dir[:-5] + '/wkhtmltopdf/wkhtmltopdf'
+    config = pdfkit.configuration(wkhtmltopdf=filename)
     url = unicodedata.normalize('NFKD', request.query.url).encode('ascii', 'ignore')
 
     response.content_type = 'application/pdf; charset=UTF-8'
     response.headers['Content-Disposition'] = 'attachment; filename="test.pdf"'
 
-    generated_pdf = pdfkit.from_url(url, False)
+    generated_pdf = pdfkit.from_url(url, False, configuration=config)
     return generated_pdf
 
 
