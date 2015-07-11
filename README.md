@@ -1,8 +1,8 @@
-Bottle on OpenShift
+wkhmlttopdf on OpenShift
 ===================
 
-This git repository helps you get up and running quickly w/ a Bottle installation
-on the Red Hat OpenShift PaaS.
+I created this application to use with Pocket and IFTTT. There are some free pdf generators defined at IFTTT but some are not working and some have quantity limit to use. With free OpenShift service you can use freely.
+I used wkhtmltopdf and bottle. I don't know and test what this application do under heavy load.
 
 
 Running on OpenShift
