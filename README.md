@@ -20,4 +20,4 @@ That's it, you can now checkout your application at:
 
 Download url is
 
-    https://bottle-ormanli.rhcloud.com/pdf?url=<url-to-download>
+    https://bottle-$yournamespace.rhcloud.com/pdf?url=<url-to-download>
