@@ -2,6 +2,7 @@ from bottle import route, default_app, request, response
 import pdfkit
 import unicodedata
 import time
+import os
 
 wkhtmltopdf_dir = os.path.dirname(__file__)
 filename = wkhtmltopdf_dir[:-5] + '/wkhtmltopdf/wkhtmltopdf'
