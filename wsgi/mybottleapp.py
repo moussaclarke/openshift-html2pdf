@@ -1,4 +1,4 @@
-from bottle import route, default_app, request, response
+from bottle import route, default_app, request, response, template
 import pdfkit
 import unicodedata
 import time
@@ -7,11 +7,22 @@ import os
 wkhtmltopdf_dir = os.path.dirname(__file__)
 filename = wkhtmltopdf_dir[:-5] + '/wkhtmltopdf/wkhtmltopdf'
 config = pdfkit.configuration(wkhtmltopdf=filename)
+num_of_pdf = 0
+
+HTML = """\
+<html>
+<head>
+</head>
+<body>
+<strong>It works!</strong>
+ {{ count }} pdf generated since restart.
+</body>
+"""
 
 
 @route('/')
 def index():
-    return '<strong>It works!</strong>'
+    return template(HTML, count=num_of_pdf)
 
 
 @route('/pdf')
@@ -24,6 +35,8 @@ def pdf():
         response.headers['Content-Disposition'] = 'attachment; filename=' + pdf_filename
 
         generated_pdf = pdfkit.from_url(url, False, configuration=config)
+        global num_of_pdf
+        num_of_pdf += 1
         return generated_pdf
     else:
         raise ValueError('Please provide a url')
